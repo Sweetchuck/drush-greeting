@@ -20,26 +20,8 @@ function greeting_drush_command() {
 }
 
 /**
- * Implements drush_COMMAND_init().
- */
-//function drush_greeting_init() {}
-
-/**
- * Implements drush_COMMAND_pre_validate().
- */
-//function drush_greeting_pre_validate() {}
-
-/**
- * Implements drush_COMMAND_validate().
- */
-//function drush_greeting_validate() {}
-
-//drush_hook_pre_COMMAND
-
-/**
  * Implements drush_COMMAND().
  */
 function drush_greeting() {
+  drush_print(dt('Hello DDD Szeged 2014'));
 }
-
-//drush_hook_post_COMMAND
