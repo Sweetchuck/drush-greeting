@@ -11,6 +11,15 @@
 function greeting_drush_command() {
   $commands = array();
 
+  $commands['docs-greeting'] = array(
+    'description' => dt('Greetings'),
+    'hidden' => TRUE,
+    'topic' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'callback' => 'drush_print_file',
+    'callback arguments' => array(__DIR__ . '/README.md'),
+  );
+
   $commands['greeting'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Something helpful description.'),
