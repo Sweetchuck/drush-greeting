@@ -14,6 +14,9 @@ function greeting_drush_command() {
   $commands['greeting'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Something helpful description.'),
+    'arguments' => array(
+      'greeting' => dt('Kind of greeting.'),
+    ),
   );
 
   return $commands;
@@ -22,6 +25,8 @@ function greeting_drush_command() {
 /**
  * Implements drush_COMMAND().
  */
-function drush_greeting() {
-  drush_print(dt('Hello DDD Szeged 2014'));
+function drush_greeting($greeting) {
+  drush_print(dt('@greeting DDD Szeged 2014', array(
+    '@greeting' => $greeting,
+  )));
 }
