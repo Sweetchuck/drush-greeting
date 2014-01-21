@@ -18,6 +18,14 @@ function greeting_drush_command() {
     'arguments' => array(
       'greeting' => dt('Kind of greeting.'),
     ),
+    'options' => array(
+      'subject' => array(
+        'description' => dt('Something helpful description.'),
+        'example_value' => 'bar',
+        'required' => FALSE,
+        'hidden' => FALSE,
+      ),
+    ),
   );
 
   return $commands;
@@ -36,7 +44,9 @@ function drush_greeting_validate($greeting) {
  * Implements drush_COMMAND().
  */
 function drush_greeting($greeting) {
-  drush_print(dt('@greeting DDD Szeged 2014', array(
+  $subject = drush_get_option('subject', 'DDD Szeged 2014');
+  drush_print(dt('@greeting @subject', array(
     '@greeting' => $greeting,
+    '@subject' => $subject,
   )));
 }
