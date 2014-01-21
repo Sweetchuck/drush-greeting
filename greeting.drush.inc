@@ -23,7 +23,7 @@ function greeting_drush_command() {
   $commands['greeting'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Something helpful description.'),
-    'required-arguments' => TRUE,
+    'required-arguments' => FALSE,
     'arguments' => array(
       'greeting' => dt('Kind of greeting.'),
     ),
@@ -57,9 +57,9 @@ function greeting_drush_command() {
 /**
  * Implements drush_COMMAND_validate().
  */
-function drush_greeting_validate($greeting) {
+function drush_greeting_validate($greeting = NULL) {
   $greetings = greeting_info_greeting();
-  if (!isset($greetings[$greeting])) {
+  if ($greeting !== NULL && !isset($greetings[$greeting])) {
     drush_set_error('greeting_unknown_greeting', dt('Unknown greeting.'));
   }
 }
@@ -67,13 +67,20 @@ function drush_greeting_validate($greeting) {
 /**
  * Implements drush_COMMAND().
  */
-function drush_greeting($greeting) {
+function drush_greeting($greeting = NULL) {
   $greetings = greeting_info_greeting();
   $subject = drush_get_option('subject', 'DDD Szeged 2014');
 
   $sure = drush_confirm(dt('Are you sure you want to see the greeting?'));
   if (!$sure) {
     return drush_user_abort();
+  }
+
+  if (!$greeting) {
+    $greeting = drush_choice(_greeting_greeting_options());
+    if (!$greeting) {
+      return drush_user_abort();
+    }
   }
 
   return dt('@greeting @subject', array(
@@ -106,4 +113,20 @@ function greeting_info_greeting() {
       'label' => dt('Good morning'),
     ),
   );
+}
+
+/**
+ * Option list from greeting names and labels.
+ *
+ * @return array
+ *   Key value pairs of greeting names and labels.
+ */
+function _greeting_greeting_options() {
+  $options = array();
+
+  foreach (greeting_info_greeting() as $greeting) {
+    $options[$greeting['name']] = $greeting['label'];
+  }
+
+  return $options;
 }
