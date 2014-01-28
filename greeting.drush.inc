@@ -73,6 +73,15 @@ function drush_greeting_validate($greeting = NULL) {
 }
 
 /**
+ * Implements hook_COMMAND_complete().
+ */
+function greeting_greeting_complete() {
+  return array(
+    'values' => array_keys(greeting_info_greeting()),
+  );
+}
+
+/**
  * Implements drush_COMMAND().
  */
 function drush_greeting($greeting = NULL) {
