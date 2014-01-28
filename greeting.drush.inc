@@ -120,13 +120,50 @@ function drush_greeting_list() {
  *   An array of greeting definitions.
  */
 function greeting_info_greeting() {
+  static $greetings = NULL;
+
+  if ($greetings === NULL) {
+    $greetings = array();
+
+    $hook = 'greeting_info';
+
+    // Solution A.
+    $greetings = drush_command_invoke_all($hook);
+
+    // Solution B.
+    $greetings = array();
+    $command_files = drush_command_implements($hook);
+    foreach ($command_files as $command_file) {
+      $function = "{$command_file}_{$hook}";
+      $result = $function();
+      if (isset($result) && is_array($result)) {
+        foreach (array_keys($result) as $name) {
+          $result[$name]['command_file'] = $command_file;
+        }
+        $greetings = array_merge_recursive($greetings, $result);
+      }
+    }
+
+    // Alter.
+    drush_command_invoke_all_ref("{$hook}_alter", $greetings);
+
+    foreach (array_keys($greetings) as $name) {
+      $greetings[$name]['name'] = $name;
+    }
+  }
+
+  return $greetings;
+}
+
+/**
+ * Implements hook_greeting_info().
+ */
+function greeting_greeting_info() {
   return array(
     'hello' => array(
-      'name' => 'hello',
       'label' => dt('Hello'),
     ),
     'good_morning' => array(
-      'name' => 'good_morning',
       'label' => dt('Good morning'),
     ),
   );
