@@ -76,11 +76,6 @@ function drush_greeting($greeting) {
   $greetings = greeting_info_greeting();
   $subject = drush_get_option('subject', 'DDD Szeged 2014');
 
-  $sure = drush_confirm(dt('Are you sure you want to see the greeting?'));
-  if (!$sure) {
-    return drush_user_abort();
-  }
-
   return dt('@greeting @subject', array(
     '@greeting' => $greetings[$greeting]['label'],
     '@subject' => $subject,
@@ -91,6 +86,11 @@ function drush_greeting($greeting) {
  * Implements drush_COMMAND().
  */
 function drush_greeting_list() {
+  $sure = drush_confirm(dt('Are you sure you want to see the list of greetings?'));
+  if (!$sure) {
+    return drush_user_abort();
+  }
+
   return greeting_info_greeting();
 }
 
