@@ -22,15 +22,15 @@ function greeting_drush_command() {
 
   $commands['greeting'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Something helpful description.'),
+    'description' => dt('Some helpful description.'),
     'required-arguments' => TRUE,
     'arguments' => array(
       'greeting' => dt('Kind of greeting.'),
     ),
     'options' => array(
       'subject' => array(
-        'description' => dt('Something helpful description.'),
-        'example_value' => 'bar',
+        'description' => dt("The person's name"),
+        'example-value' => dt('World'),
         'required' => FALSE,
         'hidden' => FALSE,
       ),
@@ -39,7 +39,7 @@ function greeting_drush_command() {
 
   $commands['greeting-list'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Something helpful description.'),
+    'description' => dt('Some helpful description.'),
     'engines' => array(
       'outputformat' => array(
         'default' => 'table',
@@ -62,6 +62,11 @@ function drush_greeting_validate($greeting) {
   if (!isset($greetings[$greeting])) {
     drush_set_error('greeting_unknown_greeting', dt('Unknown greeting.'));
   }
+
+  $subject = drush_get_option('subject', 'DDD Szeged 2014');
+  if (!trim($subject)) {
+    drush_set_error('greeting_empty_subject', dt('The subject can not be empty.'));
+  }
 }
 
 /**
@@ -70,6 +75,7 @@ function drush_greeting_validate($greeting) {
 function drush_greeting($greeting) {
   $greetings = greeting_info_greeting();
   $subject = drush_get_option('subject', 'DDD Szeged 2014');
+
   return dt('@greeting @subject', array(
     '@greeting' => $greetings[$greeting]['label'],
     '@subject' => $subject,
