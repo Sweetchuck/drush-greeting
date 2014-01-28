@@ -13,7 +13,7 @@ function greeting_drush_command() {
 
   $commands['greeting'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Something helpful description.'),
+    'description' => dt('Some helpful description.'),
     'arguments' => array(
       'greeting' => dt('Kind of greeting.'),
     ),
