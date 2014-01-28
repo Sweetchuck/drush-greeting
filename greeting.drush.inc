@@ -20,8 +20,8 @@ function greeting_drush_command() {
     ),
     'options' => array(
       'subject' => array(
-        'description' => dt('Some helpful description.'),
-        'example_value' => 'bar',
+        'description' => dt("The person's name"),
+        'example-value' => dt('World'),
         'required' => FALSE,
         'hidden' => FALSE,
       ),
@@ -37,6 +37,11 @@ function greeting_drush_command() {
 function drush_greeting_validate($greeting) {
   if (!trim($greeting)) {
     drush_set_error('greeting_empty_greeting', dt('The greeting can not be empty.'));
+  }
+
+  $subject = drush_get_option('subject', 'DDD Szeged 2014');
+  if (!trim($subject)) {
+    drush_set_error('greeting_empty_subject', dt('The subject can not be empty.'));
   }
 }
 
