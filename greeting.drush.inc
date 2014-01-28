@@ -21,6 +21,9 @@ function greeting_drush_command() {
   );
 
   $commands['greeting'] = array(
+    'aliases' => array(
+      'gr',
+    ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Some helpful description.'),
     'required-arguments' => FALSE,
